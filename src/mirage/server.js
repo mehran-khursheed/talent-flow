@@ -7,6 +7,7 @@ import { jobRoutes } from "./routes/jobRoutes";
 import { candidateRoutes } from "./routes/candidateRoutes";
 import { assessmentRoutes } from "./routes/asessmentRoutes";
 import { getRandomLatency } from "./helpers/errorSimulator";
+import { userRoutes } from "./routes/userRoutes";
 
 export function makeServer() {
   const server = createServer({
@@ -45,6 +46,7 @@ export function makeServer() {
       jobRoutes(this);
       candidateRoutes(this);
      assessmentRoutes(this);
+      userRoutes(this);
     },
   });
 
