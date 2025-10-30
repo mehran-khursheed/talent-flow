@@ -1,5 +1,11 @@
 # TalentFlow 
 
+## LOGIN CREDENTIALS 
+## EMAIL : admin@test.com
+## PASSWORD : 123456
+
+
+
 ## Table of Contents
 
 - [Project Overview](#project-overview)
@@ -91,7 +97,7 @@ npm start
 
 Open http://localhost:3000 
 
-The app is fully functional with no backend setup.
+The app is fully functional with mocked backend.
 
 ---
 
