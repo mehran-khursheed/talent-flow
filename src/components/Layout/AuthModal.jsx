@@ -40,7 +40,7 @@ const AuthModal = ({ isOpen, onClose, mode = "login" }) => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+            className="border text-black border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
           />
           <input
             type="password"
@@ -48,7 +48,7 @@ const AuthModal = ({ isOpen, onClose, mode = "login" }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+            className="border text-black border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
           />
 
           <button
