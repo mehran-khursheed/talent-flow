@@ -6,7 +6,7 @@ import { withErrorSimulation } from "../helpers/errorSimulator";
 export function assessmentRoutes(server) {
    console.log("🔧 Registering assessment routes...");
   
- // only simulated error in write opeartions
+ 
   server.post("/assessments", withErrorSimulation(async (schema, request) => {
   const attrs = JSON.parse(request.requestBody);
   
@@ -100,7 +100,7 @@ export function assessmentRoutes(server) {
       return new Response(500, {}, { error: "Internal server error" });
     }
   });
-  server.get("/assessments",(async (schema, request) => {
+  server.get("/assessments", withErrorSimulation(async (schema, request) => {
   const { jobId } = request.queryParams;
   
   console.log("🔄 GET /api/assessments - Reading from IndexedDB");
@@ -134,7 +134,7 @@ export function assessmentRoutes(server) {
     return new Response(500, {}, { error: "Failed to load assessments" });
   }
   }));
-  server.put("/assessments/:jobId", withErrorSimulation (async (schema, request) => {
+  server.put("/assessments/:jobId", async (schema, request) => {
   const jobId = request.params.jobId;
   const attrs = JSON.parse(request.requestBody);
   
@@ -182,8 +182,8 @@ export function assessmentRoutes(server) {
       error: "Failed to update assessment in database" 
     });
   }
-  }));
-  server.delete("/assessments/:id", withErrorSimulation(async ( request) => {
+  });
+  server.delete("/assessments/:id", withErrorSimulation(async (schema, request) => {
   const id = request.params.id; // This is the UUID
   
   console.log("🔄 DELETE assessment with ID:", id);
