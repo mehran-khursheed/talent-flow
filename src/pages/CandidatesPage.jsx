@@ -221,7 +221,7 @@ export default function CandidateDetailPage() {
     ), {
       duration: Infinity,
       id: `confirm-${candidateId}`,
-      className: "bg-black border border-white/10 text-white shadow-2xl rounded-xl",
+      className: "bg-black  text-white shadow-2xl rounded-xl",
     });
   };
 
