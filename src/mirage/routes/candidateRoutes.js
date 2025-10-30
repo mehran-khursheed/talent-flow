@@ -83,7 +83,7 @@ export function candidateRoutes(server) {
         }
     }))
 
-    server.patch("/candidates/:id",withErrorSimulation(async ( request) => {
+     server.patch("/candidates/:id", async (schema, request) => {
     try {
         const candidateId = parseInt(request.params.id, 10);
         const attrs = JSON.parse(request.requestBody);
@@ -122,7 +122,7 @@ export function candidateRoutes(server) {
         console.error("Error updating candidate:", error);
         return new Response(500, {}, { error: "Failed to update candidate. Please try again." });
     }
-  }));
+  });
 
 
 }

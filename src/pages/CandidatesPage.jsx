@@ -209,7 +209,7 @@ export default function CandidateDetailPage() {
           </button>
           <button
             onClick={() => {
-              setTasks((prevTasks) => [...prevTasks, originalTask]);
+              setTasks((prevTasks) => [...prevTasks]);
               toast.dismiss(t.id);
             }}
             className="px-3 py-1 bg-white/10 border border-white/20 text-white/70 rounded-full hover:bg-white/20 text-xs font-medium transition-all duration-200"
