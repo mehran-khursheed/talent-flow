@@ -162,7 +162,7 @@ export default function CandidateDetailPage() {
     const originalTask = { ...candidateToMove };
 
     toast((t) => (
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2 bg-black">
         <p className="font-semibold text-white">Confirm Stage Change</p>
         <p className="text-sm text-white/80">
           Move <b>{candidateToMove.name || `ID ${candidateId}`}</b> to{" "}
@@ -221,7 +221,7 @@ export default function CandidateDetailPage() {
     ), {
       duration: Infinity,
       id: `confirm-${candidateId}`,
-      className: "bg-gradient-to-br from-[#131b20] to-[#191c1f] border border-white/10 text-white shadow-2xl rounded-xl",
+      className: "bg-black border border-white/10 text-white shadow-2xl rounded-xl",
     });
   };
 
