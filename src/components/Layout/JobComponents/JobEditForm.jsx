@@ -2,12 +2,13 @@
 import { useState, useEffect } from "react";
 import LoadingSpinner from "../LoadingSpinner";
 
-export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
+export default function JobEditForm({ job, onSave, onCancel, isSaving, isCreateMode = false }) {
   const [formData, setFormData] = useState({
     title: "",
+    slug: "",
     description: "",
     priority: "medium",
-    status: "open",
+    status: "active",
     department: "",
     employmentType: "",
     experience: "",
@@ -24,9 +25,10 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
     if (job) {
       setFormData({
         title: job.title || "",
+        slug: job.slug || "",
         description: job.description || "",
         priority: job.priority || "medium",
-        status: job.status || "open",
+        status: job.status || "active",
         department: job.department || "",
         employmentType: job.employmentType || "",
         experience: job.experience || "",
@@ -38,6 +40,20 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
       });
     }
   }, [job]);
+
+  // Auto-generate slug from title in create mode
+  useEffect(() => {
+    if (isCreateMode && formData.title && !formData.slug) {
+      const generatedSlug = formData.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+      setFormData(prev => ({
+        ...prev,
+        slug: generatedSlug
+      }));
+    }
+  }, [formData.title, isCreateMode]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -73,6 +89,9 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
     }
+    if (!formData.slug.trim()) {
+      newErrors.slug = "Slug is required";
+    }
     if (!formData.department.trim()) {
       newErrors.department = "Department is required";
     }
@@ -84,6 +103,11 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
     }
     if (!formData.location.trim()) {
       newErrors.location = "Location is required";
+    }
+
+    // Slug format validation
+    if (formData.slug && !/^[a-z0-9-]+$/.test(formData.slug)) {
+      newErrors.slug = "Slug can only contain lowercase letters, numbers, and hyphens";
     }
 
     setErrors(newErrors);
@@ -112,6 +136,8 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
           <LoadingSpinner fullScreen={false} size="md" />
         </div>
       )}
+
+      {/* Title */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-spotify-green mb-1">
           Job Title *
@@ -131,6 +157,31 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
         {errors.title && (
           <p id="title-error" className="mt-1 text-sm text-red-500">{errors.title}</p>
         )}
+      </div>
+
+      {/* Slug - Important for create mode */}
+      <div>
+        <label htmlFor="slug" className="block text-sm font-medium text-spotify-green mb-1">
+          Slug *
+        </label>
+        <input
+          type="text"
+          id="slug"
+          name="slug"
+          value={formData.slug}
+          onChange={handleChange}
+          className={`w-full px-3 py-2 bg-spotify-dark border rounded-lg text-white placeholder-spotify-light-gray ${
+            errors.slug ? 'border-red-500' : 'border-spotify-light-gray'
+          } focus:outline-none focus:ring-2 focus:ring-spotify-green`}
+          placeholder="job-url-slug"
+          aria-describedby={errors.slug ? "slug-error" : undefined}
+        />
+        {errors.slug && (
+          <p id="slug-error" className="mt-1 text-sm text-red-500">{errors.slug}</p>
+        )}
+        <p className="mt-1 text-xs text-spotify-light-gray">
+          URL-friendly identifier. Auto-generated from title but can be customized.
+        </p>
       </div>
 
       {/* Priority and Status */}
@@ -163,9 +214,8 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
             onChange={handleChange}
             className="w-full px-3 py-2 bg-spotify-dark border border-spotify-light-gray rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-spotify-green"
           >
-            <option value="open">Open</option>
-            <option value="closed">Closed</option>
-            <option value="on-hold">On Hold</option>
+            <option value="active">Active</option>
+            <option value="archived">Archived</option>
           </select>
         </div>
       </div>
@@ -356,7 +406,7 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving }) {
           disabled={isSaving}
           className="px-4 py-2 text-sm font-medium text-black bg-spotify-green hover:bg-spotify-green/90 rounded-lg transition disabled:opacity-50 flex items-center"
         >
-          Save Changes
+          {isCreateMode ? "Create Job" : "Save Changes"}
         </button>
       </div>
     </form>

@@ -1,4 +1,3 @@
-import React from 'react';
 
 // Define questionTypes locally since it's used in the component
 const questionTypes = [
