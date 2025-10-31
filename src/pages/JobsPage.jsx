@@ -185,10 +185,11 @@ const jobCards = jobs?.map(job => (
     }
 
   return (
-    <div className="max-w-4xl mx-auto my-12 px-3 scrollbar-spotify scrollbar-spotify-dark">
-    
+    <div className=" max-w-4xl mx-auto my-12 px-3 scrollbar-spotify scrollbar-spotify-dark">
+     
       {/* --- Filters --- */}
-      <div className="flex gap-4 mb-8 items-end">
+      <div className="flex gap-4 mb-8 items-end ">
+         
         {/* // search bar for jobs */}
         <div className="hidden md:flex items-center flex-1 max-w-xl mx-8">
                   <div className="relative w-full">
@@ -200,10 +201,21 @@ const jobCards = jobs?.map(job => (
                       placeholder="Search jobs..."
                       className="w-full bg-spotify-light-dark/40 text-white placeholder-spotify-light-gray pl-12 pr-4 py-2.5 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-spotify-green transition-all"
                     />
+                    
                   </div>
+                  <button
+         onClick={() => navigate('/app/jobs/new')}
+         className="flex items-center space-x-2 px-6 py-2.5 bg-spotify-green text-black rounded-full hover:bg-spotify-green/90 transition font-medium text-sm shadow-md"
+      >
+         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+         </svg>
+        <span className="font-bold">job</span>
+    </button>
                 </div>
         <div>
       <div className="relative">
+        
   {/* Status Label */}
   <label className="block text-sm font-medium mb-2 text-spotify-light-gray ml-1">
     Status

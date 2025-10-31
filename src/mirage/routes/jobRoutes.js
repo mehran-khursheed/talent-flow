@@ -64,38 +64,49 @@ export function jobRoutes(server) {
     }
   });
   server.post("/jobs", withErrorSimulation(async (schema, request) => {
-    try {
-      const attrs = JSON.parse(request.requestBody);
-
-      if (!attrs.title) {
-        return new Response(400, {}, { error: "Title is required." });
-      }
-      if (!attrs.slug) {
-        return new Response(400, {}, { error: "Slug is required." });
-      }
-
-      const now = new Date().toISOString();
-      const newJob = {
-        title: attrs.title,
-        slug: attrs.slug,
-        status: attrs.status || "active",
-        tags: attrs.tags || [],
-        order: typeof attrs.order === "number" ? attrs.order : 0,
-        createdAt: now,
-        updatedAt: now,
-      };
-
-      const id = await db.jobs.add(newJob);
-      const savedJob = await db.jobs.get(id);
-
-      return new Response(201, { "Content-Type": "application/json" }, savedJob);
-
-    } catch (error) {
-      console.error("Error creating job:", error);
-      return new Response(500, {}, { error: "Failed to create job. Please try again." });
-    }
-  }));
-
+  const attrs = JSON.parse(request.requestBody);
+  
+  console.log("🟢 CREATE JOB: Received data:", attrs);
+  
+  // Validation
+  if (!attrs.title) {
+    return new Response(400, {}, { error: "Title is required." });
+  }
+  if (!attrs.slug) {
+    return new Response(400, {}, { error: "Slug is required." });
+  }
+  
+  try {
+    // Create job data with proper IDs and timestamps
+    const jobData = {
+      ...attrs,
+      id: attrs.id || Date.now().toString(), // Use timestamp as unique ID
+      status: attrs.status || "active",
+      tags: attrs.tags || [],
+      order: typeof attrs.order === "number" ? attrs.order : 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    
+    console.log("💾 Saving new job to IndexedDB...");
+    
+    // Save to IndexedDB first (source of truth)
+    const id = await db.jobs.add(jobData);
+    
+    console.log("✅ Saved to IndexedDB with ID:", id);
+    
+    // Also create in Mirage for current session
+    const job = server.create("job", { ...jobData, id });
+    
+    console.log("✅ Created in Mirage with ID:", job.id);
+    
+    return job;
+    
+  } catch (error) {
+    console.error("🚨 Error creating job:", error);
+    return new Response(500, {}, { error: "Failed to create job. Please try again." });
+  }
+}));
   server.patch("/jobs/:id", withErrorSimulation(async (schema, request) => {
     try {
       const jobId = request.params.id;

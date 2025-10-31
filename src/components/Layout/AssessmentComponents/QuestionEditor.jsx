@@ -5,7 +5,6 @@ import { questionTypes } from '../../../pages/assessments/AssessmentBuilderPage'
 export default function QuestionEditor({ 
   question, 
   questionIndex, 
-  totalQuestions, 
   onUpdate, 
   onDelete, 
   onMoveUp, 
