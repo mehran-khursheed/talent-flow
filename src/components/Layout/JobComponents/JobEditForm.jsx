@@ -42,18 +42,21 @@ export default function JobEditForm({ job, onSave, onCancel, isSaving, isCreateM
   }, [job]);
 
   // Auto-generate slug from title in create mode
-  useEffect(() => {
-    if (isCreateMode && formData.title && !formData.slug) {
-      const generatedSlug = formData.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)+/g, '');
-      setFormData(prev => ({
-        ...prev,
-        slug: generatedSlug
-      }));
-    }
-  }, [formData.title, isCreateMode]);
+  //fixing eslint 
+  const { title, slug } = formData;
+
+useEffect(() => {
+  if (isCreateMode && title && !slug) {
+    const generatedSlug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
+    setFormData(prev => ({
+      ...prev,
+      slug: generatedSlug
+    }));
+  }
+}, [title, slug, isCreateMode]);
 
   // Handle input changes
   const handleChange = (e) => {
