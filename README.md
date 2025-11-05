@@ -169,6 +169,9 @@ TalentFlow/
 ---
 ##  Key Technical Decisions
 
+
+### State Management: Context API + Custom Hooks
+- We chose React Context with custom hooks over Redux for its **optimal complexity-to-benefit ratio**. This architecture provides clean separation of concerns with feature-specific contexts (Jobs, Candidates, Assessments) while    avoiding unnecessary boilerplate. The app's clear domain boundaries and moderate state complexity make this approach both sufficient and superior for maintainability.
 - Custom React Hooks instead of Redux for simpler state management as per requirement
 - Component composition over complex prop drilling 
 - Separation of concerns with hooks handling logic and components handling UI
